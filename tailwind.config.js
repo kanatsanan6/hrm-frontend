@@ -4,7 +4,15 @@ module.exports = {
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      screens: {
+        'sm': '0px',
+        'md': '768px',
+        'lg': '960px',
+        'xl': '1200px',
+        '2xl': '1536px',
+      },
+    },
   },
   daisyui: {
     themes: false,

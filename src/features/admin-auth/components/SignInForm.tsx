@@ -10,12 +10,13 @@ const SignInForm = () => {
     signInServices().signIn({
       email: data["email"],
       password: data["password"],
+      remember: data["remember"],
     });
   };
   return (
     <form
       onSubmit={handleSubmit(handleSignIn)}
-      className="form-control w-full max-w-xs space-y-4"
+      className="form-control mt-6 w-full max-w-xs space-y-2"
     >
       <div>
         <label className="label">
@@ -27,9 +28,7 @@ const SignInForm = () => {
           placeholder="name@company.com"
           className="input-bordered input input-md w-full max-w-md"
         />
-      </div>
 
-      <div>
         <label className="label">
           <span className="label-text">Password</span>
         </label>
@@ -37,22 +36,27 @@ const SignInForm = () => {
           {...register("password")}
           type="password"
           placeholder="••••••••"
-          className="input-m input-bordered input w-full max-w-md"
+          className="input-bordered input input-md w-full max-w-md"
         />
       </div>
-      <div className="flex items-center justify-between">
-        <label className="label cursor-pointer space-x-2">
-          <input
-            type="checkbox"
-            className="checkbox-primary checkbox h-4 w-4 rounded-sm border-gray-300"
-          />
-          <span className="label-text">Remember me</span>
-        </label>
-        <a className="label-text link" href="#">
-          Forget password?
-        </a>
+      <div className="space-y-2">
+        <div className="flex items-center justify-between">
+          <label className="label cursor-pointer space-x-2">
+            <input
+              {...register("remember")}
+              type="checkbox"
+              className="checkbox-primary checkbox h-4 w-4 rounded-sm border-gray-300"
+            />
+            <span className="label-text">Remember me</span>
+          </label>
+          <a className="label-text link" href="/admins/forget-password">
+            Forget password?
+          </a>
+        </div>
+        <button type="submit" className="btn-primary btn w-full bg-blue-700">
+          Sign In
+        </button>
       </div>
-      <button className="btn-primary btn w-full bg-blue-700">Sign In</button>
     </form>
   );
 };
