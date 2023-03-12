@@ -4,11 +4,25 @@ import { Fragment } from "react";
 
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { QueryClient, QueryClientProvider } from "react-query";
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: false,
+      refetchOnWindowFocus: false,
+      useErrorBoundary: true,
+      staleTime: 5000,
+    },
+  },
+});
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <Fragment>
-      <Component {...pageProps} />
+      <QueryClientProvider client={queryClient}>
+        <Component {...pageProps} />
+      </QueryClientProvider>
       <ToastContainer
         position="top-right"
         hideProgressBar={true}

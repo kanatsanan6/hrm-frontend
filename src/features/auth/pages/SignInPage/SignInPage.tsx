@@ -1,6 +1,9 @@
 import SignInForm from "../../components/SignInForm";
+import { useSignIn } from "../../services";
 
 const SignInPage = () => {
+  const { mutate: signIn, isLoading } = useSignIn();
+
   return (
     <div className="flex h-screen items-center justify-center bg-gray-50">
       <div className="flex flex-col items-center justify-center">
@@ -11,7 +14,20 @@ const SignInPage = () => {
               Sign in
             </h1>
             <p className="text-gray-500">Please sign in to your account.</p>
-            <SignInForm />
+            <SignInForm
+              isLoading={isLoading}
+              onSubmit={(data) => {
+                signIn({ data });
+              }}
+            />
+            <div className="mt-4 flex">
+              <p className="text-sm text-gray-500">
+                Don't have an account?&nbsp;
+              </p>
+              <a className="label-text link" href="/sign-up">
+                Sign Up
+              </a>
+            </div>
           </div>
         </div>
       </div>
