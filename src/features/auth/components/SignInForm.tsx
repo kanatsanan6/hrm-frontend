@@ -1,4 +1,5 @@
-import FormControl from "@/components/FormControl";
+import FormControl from "@/components/forms/FormControl";
+import PasswordForm from "@/components/forms/PasswordForm";
 import { useForm } from "react-hook-form";
 
 import { SignInParams } from "../types";
@@ -31,12 +32,7 @@ const SignInForm = (props: SignInFormProps) => {
         </FormControl>
 
         <FormControl label="Password" isRequired={true}>
-          <input
-            {...register("password")}
-            type="password"
-            placeholder="••••••••"
-            className="input-bordered input input-md w-full max-w-md"
-          />
+          <PasswordForm {...register("password")} placeholder="••••••••" />
         </FormControl>
       </div>
       <div className="space-y-2">
