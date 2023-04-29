@@ -1,37 +1,36 @@
-import { fetchAPI } from "@/lib/api";
-import { getErrorMsg } from "@/lib/utils/getErrorMsg";
 import { AxiosError } from "axios";
-import { useMutation } from "react-query";
 import { toast } from "react-toastify";
-import { SignUpParams } from "../types";
+import { useMutation } from "react-query";
+
+import { fetchAPI } from "@/lib/api";
+import { ForgetPasswordParams } from "../types";
+import { getErrorMsg } from "@/lib/utils/getErrorMsg";
 
 type Payload = {
-  data: SignUpParams;
+  data: ForgetPasswordParams;
 };
 
-export const useSignUp = () => {
+export const useForgetPassword = () => {
   return useMutation<void, AxiosError, Payload>(
     async ({ data }) => {
       await fetchAPI({
-        path: "/api/v1/sign_up",
+        path: "/api/v1/forget_password",
         method: "post",
         data,
       });
     },
     {
       onSuccess() {
-        toast.success("Sign up successfully", {
-          autoClose: 1000,
+        toast.success("Reset password link has been sent to your inbox", {
+          autoClose: 2000,
           progress: undefined,
         });
-
-        window.location.href = "/sign-in";
       },
       onError(error) {
         const errorMsg = getErrorMsg(error);
         switch (errorMsg) {
-          case "duplicated email":
-            toast.error("Email has already been used", {
+          case "record not found":
+            toast.error("Email not found", {
               autoClose: 2000,
               progress: undefined,
             });

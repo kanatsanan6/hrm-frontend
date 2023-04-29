@@ -1,3 +1,4 @@
+import { Box, Collapse, Flex, HStack, Text, VStack } from "@chakra-ui/react";
 import { ReactNode } from "react";
 
 type Props = {
@@ -13,24 +14,22 @@ const FormControl = (props: Props) => {
   const isInvalid = Boolean(errorMsg);
 
   return (
-    <div className="flex w-full flex-col">
+    <VStack alignItems="start" width="100%">
       {label && (
-        <div className="flex items-center justify-between">
-          <label className="label flex justify-start">
-            <span className="label-text">{label}</span>
-            {isRequired && <p className="text-red-500">*</p>}
-          </label>
-          <div
-            className={`collapse ${
-              isInvalid ? "collapse-open" : "collapse-close"
-            }`}
-          >
-            <p className="mt-1 text-right text-xs text-red-600">{errorMsg}</p>
-          </div>
-        </div>
+        <Flex justifyContent="space-between" alignItems="baseline" width="100%">
+          <Flex>
+            <Text>{label}</Text>
+            {isRequired && <Text color="red">*</Text>}
+          </Flex>
+          <Collapse in={isInvalid}>
+            <Text fontSize="14px" color="red.600">
+              {errorMsg}
+            </Text>
+          </Collapse>
+        </Flex>
       )}
       {children}
-    </div>
+    </VStack>
   );
 };
 

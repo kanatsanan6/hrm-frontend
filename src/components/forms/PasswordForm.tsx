@@ -1,32 +1,52 @@
 import {
-  DetailedHTMLProps,
-  forwardRef,
-  InputHTMLAttributes,
-  useState,
-} from "react";
+  IconButton,
+  Input,
+  InputGroup,
+  InputProps,
+  InputRightElement,
+} from "@chakra-ui/react";
+import { forwardRef, useState } from "react";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 
-type Props = DetailedHTMLProps<
-  InputHTMLAttributes<HTMLInputElement>,
-  HTMLInputElement
-> & {};
+export type PasswordInputProps = InputProps & {};
 
-const PasswordForm = forwardRef<HTMLInputElement, Props>((props, ref) => {
-  const [show, setShow] = useState(false);
+const PasswordForm = forwardRef<HTMLInputElement, PasswordInputProps>(
+  (props, ref) => {
+    const [show, setShow] = useState(false);
+    const handleClick = () => setShow((show) => !show);
 
-  return (
-    <div className="input-bordered input input-md flex w-full max-w-md flex-row items-center justify-between">
-      <input
-        className="w-full !outline-none"
-        type={show ? "text" : "password"}
-        {...props}
-        ref={ref}
-      />
-      <div onClick={() => setShow((prevShow) => !prevShow)}>
-        {show ? <FiEyeOff /> : <FiEye />}
-      </div>
-    </div>
-  );
-});
+    return (
+      <InputGroup size={props.size}>
+        <Input
+          pr="3rem"
+          type={show ? "text" : "password"}
+          {...props}
+          ref={ref}
+        />
+        <InputRightElement width="2rem">
+          <IconButton
+            aria-label="toggle view password"
+            onClick={handleClick}
+            variant="unstyled"
+            colorScheme="gray"
+            icon={show ? <FiEyeOff /> : <FiEye />}
+            size="sm"
+            tabIndex={-1}
+            sx={{
+              color: "gray.400",
+              fontSize: "20px",
+              justifyContent: "center",
+              d: "inline-flex",
+              mr: 4,
+              _focus: {
+                boxShadow: "none",
+              },
+            }}
+          />
+        </InputRightElement>
+      </InputGroup>
+    );
+  }
+);
 
 export default PasswordForm;

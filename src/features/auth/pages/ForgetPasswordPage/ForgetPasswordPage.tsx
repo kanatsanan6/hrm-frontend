@@ -1,17 +1,91 @@
-import ForgetPasswordForm from "../../components/ForgetPasswordForm";
+import {
+  Box,
+  Button,
+  Flex,
+  HStack,
+  Input,
+  Link,
+  Text,
+  VStack,
+} from "@chakra-ui/react";
+import FormControl from "@/components/forms/FormControl";
+import { useForm } from "react-hook-form";
+
+import { forgetPasswordSchema } from "../../schema";
+import { ForgetPasswordParams } from "../../types";
+import { useForgetPassword } from "../../services";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 const ForgetPasswordPage = () => {
+  const {
+    handleSubmit,
+    register,
+    reset,
+    formState: { errors },
+  } = useForm<ForgetPasswordParams>({
+    resolver: zodResolver(forgetPasswordSchema),
+  });
+
+  const { mutate: resetPassword, isLoading } = useForgetPassword();
+
   return (
-    <div className="flex h-screen items-center justify-center bg-gray-50">
-      <div className="flex flex-col items-center justify-center">
-        <div className="flex w-96 flex-col justify-between space-y-4 rounded-lg bg-white px-8 py-8 shadow">
-          <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl">
-            Forget a password?
-          </h1>
-          <ForgetPasswordForm />
-        </div>
-      </div>
-    </div>
+    <Flex
+      height="100vh"
+      width="100vw"
+      bgColor="gray.100"
+      justifyContent="center"
+      alignItems="center"
+    >
+      <VStack
+        rounded="10px"
+        width="400px"
+        bgColor="white"
+        padding="30px"
+        alignItems="start"
+      >
+        <Text fontSize="22px" fontWeight="bold">
+          Forget Password
+        </Text>
+        <Box width="100%">
+          <form
+            onSubmit={handleSubmit((data) => {
+              resetPassword({ data });
+              reset();
+            })}
+          >
+            <FormControl
+              label="Email"
+              isRequired={true}
+              errorMsg={errors.email?.message}
+            >
+              <Input
+                {...register("email")}
+                placeholder="name@mail.com"
+                type="text"
+                width="100%"
+              />
+            </FormControl>
+
+            <Button
+              colorScheme="blue"
+              marginTop="12px"
+              type="submit"
+              width="100%"
+              isLoading={isLoading}
+            >
+              Submit
+            </Button>
+          </form>
+        </Box>
+
+        <HStack spacing="2px" fontSize="14px">
+          <Text color="gray.500">Back to&nbsp;</Text>
+          <Link color="blue.600" href="/sign-in">
+            Sign In?
+          </Link>
+        </HStack>
+      </VStack>
+    </Flex>
   );
 };
 

@@ -4,7 +4,7 @@ import { setCookie } from "nookies";
 import { useMutation } from "react-query";
 import { toast } from "react-toastify";
 
-import { COOKIE_ADMIN_TOKEN, EXPIRY, REMEMBER_EXPIRY } from "../constants";
+import { COOKIE_ADMIN_TOKEN, EXPIRY } from "../constants";
 import { SignInParams } from "../types";
 
 type Payload = {
@@ -33,8 +33,12 @@ export const useSignIn = () => {
           autoClose: 1000,
           progress: undefined,
         });
+
+        setTimeout(() => {
+          window.location.href = "/user-management";
+        }, 1000);
       },
-      onError(error) {
+      onError() {
         toast.error("Email or Password is incorrect", {
           autoClose: 2000,
           progress: undefined,
