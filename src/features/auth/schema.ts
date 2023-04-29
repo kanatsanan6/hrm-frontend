@@ -19,18 +19,36 @@ export const passwordValidator = (password: string) => {
   return passwordSchema.validate(password);
 };
 
-export const signUpFormSchema = z.object({
-  first_name: z.string().min(1, "Required"),
-  last_name: z.string().min(1, "Required"),
+export const signUpFormSchema = z
+  .object({
+    first_name: z.string().min(1, "Required"),
+    last_name: z.string().min(1, "Required"),
+    email: z.string().email("Email is incorrect").min(1, "Required"),
+    company_name: z.string().min(1, "Required"),
+    password: z
+      .string()
+      .min(1, "Required")
+      .refine(passwordValidator, "Password is not strong"),
+    password_confirmation: z.string().min(1, "Required"),
+  })
+  .refine((data) => data.password === data.password_confirmation, {
+    message: "Password is not matched",
+    path: ["password_confirmation"],
+  });
+
+export const forgetPasswordSchema = z.object({
   email: z.string().email("Email is incorrect").min(1, "Required"),
-  company_name: z.string().min(1, "Required"),
-  password: z
-    .string()
-    .min(1, "Required")
-    .refine(passwordValidator, "Password is not strong"),
-  password_confirmation: z.string().min(1, "Required"),
 });
 
-export const resetPasswordSchema = z.object({
-  email: z.string().email("Email is incorrect").min(1, "Required"),
-});
+export const resetPasswordSchema = z
+  .object({
+    password: z
+      .string()
+      .min(1, "Required")
+      .refine(passwordValidator, "Password is not strong"),
+    password_confirmation: z.string().min(1, "Required"),
+  })
+  .refine((data) => data.password === data.password_confirmation, {
+    message: "Password is not matched",
+    path: ["password_confirmation"],
+  });

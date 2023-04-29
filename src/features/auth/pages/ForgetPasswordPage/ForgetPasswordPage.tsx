@@ -11,7 +11,7 @@ import {
 import FormControl from "@/components/forms/FormControl";
 import { useForm } from "react-hook-form";
 
-import { resetPasswordSchema } from "../../schema";
+import { forgetPasswordSchema } from "../../schema";
 import { ForgetPasswordParams } from "../../types";
 import { useForgetPassword } from "../../services";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -23,7 +23,7 @@ const ForgetPasswordPage = () => {
     reset,
     formState: { errors },
   } = useForm<ForgetPasswordParams>({
-    resolver: zodResolver(resetPasswordSchema),
+    resolver: zodResolver(forgetPasswordSchema),
   });
 
   const { mutate: resetPassword, isLoading } = useForgetPassword();

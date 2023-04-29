@@ -16,3 +16,8 @@ export type SignUpParams = {
 export type ForgetPasswordParams = {
   email: string;
 };
+
+export type ResetPasswordPayload = {
+  password: string;
+  password_confirmation: string;
+};

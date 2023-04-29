@@ -151,40 +151,44 @@ const Menu = (props: MenuProps) => {
   const matchRoute = router.pathname === route;
 
   return (
-    <HStack
-      alignItems="center"
-      spacing="14px"
+    <Link
       width="100%"
-      paddingY="8px"
-      paddingLeft="8px"
-      paddingRight="14px"
-      cursor="pointer"
-      bgColor={matchRoute ? "gray.100" : "white"}
-      rounded="10px"
+      href={route}
       sx={{
         _hover: {
           bgColor: "gray.100",
         },
       }}
     >
-      <Icon
-        as={icon}
-        fontSize="18px"
-        color={matchRoute ? "gray.500" : "gray.400"}
-      />
-      <Link
-        fontSize="15px"
-        fontWeight={matchRoute ? "bold" : "normal"}
-        color="gray.600"
-        href={route}
-        sx={{
-          _hover: {
-            textDecoration: "none",
-          },
-        }}
+      <HStack
+        alignItems="center"
+        spacing="14px"
+        width="100%"
+        paddingY="8px"
+        paddingLeft="8px"
+        paddingRight="14px"
+        cursor="pointer"
+        bgColor={matchRoute ? "gray.100" : "white"}
+        rounded="10px"
       >
-        {label}
-      </Link>
-    </HStack>
+        <Icon
+          as={icon}
+          fontSize="18px"
+          color={matchRoute ? "gray.500" : "gray.400"}
+        />
+        <Text
+          fontSize="15px"
+          fontWeight={matchRoute ? "bold" : "normal"}
+          color="gray.600"
+          sx={{
+            _hover: {
+              textDecoration: "none",
+            },
+          }}
+        >
+          {label}
+        </Text>
+      </HStack>
+    </Link>
   );
 };
