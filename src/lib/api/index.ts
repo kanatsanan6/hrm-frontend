@@ -1,3 +1,4 @@
+import { getCredentials } from "@/features/auth/utils";
 import axios, { AxiosRequestConfig } from "axios";
 
 type FetchAPIParams = {
@@ -13,9 +14,20 @@ type GetBaseUrlParams = {
 };
 
 const _axios = axios.create();
+_axios.interceptors.request.use(async (config: any) => {
+  return {
+    ...config,
+    headers: {
+      ...config.headers,
+      Authorization: `Bearer ${getCredentials()}`,
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+  };
+});
 
 export function fetchAPI<T = any>({
-  url = "http://localhost:8080",
+  url = "http://localhost:3031",
   prefix = "",
   path,
   ...options

@@ -1,5 +1,5 @@
+import { Flex, HStack, Icon, Text, VStack } from "@chakra-ui/react";
 import { ReactNode, useState } from "react";
-import { IconContext } from "react-icons";
 import { BsCircle, BsCheckCircleFill } from "react-icons/bs";
 
 type Props = {
@@ -23,15 +23,27 @@ const PasswordValidatorForm = (props: Props) => {
   const isContainSpecial = specialRegex.test(value);
 
   return (
-    <div
-      className="z-50"
+    <Flex
+      direction="column"
+      alignItems="end"
+      zIndex="50"
+      width="100%"
       onFocus={() => setShow(true)}
       onBlur={() => setShow(false)}
     >
       {children}
       {show && (
-        <div className="mb-[-175px] mt-2 flex justify-end">
-          <div className="border-black-800 w-84 flex h-[167px] flex-col justify-center rounded-md border bg-white p-2">
+        <Flex
+          border="1px solid"
+          borderColor="gray.200"
+          rounded="10px"
+          marginBottom="-155px"
+          bgColor="white"
+          padding="6px"
+          width="fit-content"
+          marginTop="4px"
+        >
+          <VStack alignItems="start">
             <PasswordHint
               text="At least 8 characters"
               passed={isAtLeast8Char}
@@ -52,10 +64,10 @@ const PasswordValidatorForm = (props: Props) => {
               text="Must contain at least 1 special character"
               passed={isContainSpecial}
             />
-          </div>
-        </div>
+          </VStack>
+        </Flex>
       )}
-    </div>
+    </Flex>
   );
 };
 
@@ -68,18 +80,14 @@ const PasswordHint = (passwordHintProps: PasswordHintProps) => {
   const { text, passed } = passwordHintProps;
 
   return (
-    <div className="flex items-center space-x-2 p-1">
+    <HStack alignItems="center">
       {passed ? (
-        <IconContext.Provider value={{ color: "#00C4A8" }}>
-          <BsCheckCircleFill />
-        </IconContext.Provider>
+        <Icon as={BsCheckCircleFill} color="#00C4A8" />
       ) : (
-        <IconContext.Provider value={{ color: "#C4C4C4" }}>
-          <BsCircle />
-        </IconContext.Provider>
+        <Icon as={BsCircle} color="#C4C4C4" />
       )}
-      <p className="text-sm">{text}</p>
-    </div>
+      <Text fontSize="14px">{text}</Text>
+    </HStack>
   );
 };
 

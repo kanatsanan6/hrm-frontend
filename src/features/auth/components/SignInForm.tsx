@@ -3,62 +3,65 @@ import PasswordForm from "@/components/forms/PasswordForm";
 import { useForm } from "react-hook-form";
 
 import { SignInParams } from "../types";
+import {
+  Box,
+  Button,
+  Checkbox,
+  HStack,
+  Input,
+  Link,
+  Text,
+  VStack,
+} from "@chakra-ui/react";
 
 type SignInFormProps = {
   onSubmit: (data: SignInParams) => void;
   isLoading: boolean;
 };
 
-const SignInForm = (props: SignInFormProps) => {
+export const SignInForm = (props: SignInFormProps) => {
   const { onSubmit, isLoading } = props;
 
   const { handleSubmit, register } = useForm<SignInParams>();
 
   return (
-    <form
-      onSubmit={handleSubmit((data) => {
-        onSubmit(data);
-      })}
-      className="form-control mt-6 w-full max-w-xs space-y-2"
-    >
-      <div>
-        <FormControl label="Email" isRequired={true}>
-          <input
-            {...register("email")}
-            type="email"
-            placeholder="name@company.com"
-            className="input-bordered input input-md w-full max-w-md"
-          />
-        </FormControl>
-
-        <FormControl label="Password" isRequired={true}>
-          <PasswordForm {...register("password")} placeholder="••••••••" />
-        </FormControl>
-      </div>
-      <div className="space-y-2">
-        <div className="flex items-center justify-between">
-          <label className="label cursor-pointer space-x-2">
-            <input
-              type="checkbox"
-              className="checkbox-primary checkbox h-4 w-4 rounded-sm border-gray-300"
+    <Box width="100%">
+      <form onSubmit={handleSubmit((data) => onSubmit(data))}>
+        <VStack width="100%" spacing="16px" alignItems="start">
+          <FormControl label="Email" isRequired={true}>
+            <Input
+              {...register("email")}
+              type="email"
+              placeholder="name@mail.com"
             />
-            <span className="label-text">Remember me</span>
-          </label>
-          <a className="label-text link" href="/admins/forget-password">
-            Forget password?
-          </a>
-        </div>
-        <button
-          type="submit"
-          className={`btn-primary btn w-full bg-blue-700 ${
-            isLoading && "btn-disabled loading"
-          }`}
-        >
-          Sign In
-        </button>
-      </div>
-    </form>
+          </FormControl>
+
+          <FormControl label="Password" isRequired={true}>
+            <PasswordForm {...register("password")} placeholder="••••••••" />
+          </FormControl>
+
+          <VStack width="100%">
+            <HStack justifyContent="space-between" width="100%">
+              <HStack>
+                <Checkbox />
+                <Text fontSize="14px">Remember me</Text>
+              </HStack>
+              <Link color="blue.600" fontSize="14px" href="/forget-password">
+                Forget password?
+              </Link>
+            </HStack>
+            <Button
+              type="submit"
+              colorScheme="blue"
+              width="100%"
+              marginTop="200px"
+              isLoading={isLoading}
+            >
+              Sign In
+            </Button>
+          </VStack>
+        </VStack>
+      </form>
+    </Box>
   );
 };
-
-export default SignInForm;

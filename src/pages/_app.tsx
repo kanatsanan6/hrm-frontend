@@ -5,6 +5,13 @@ import { Fragment } from "react";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { QueryClient, QueryClientProvider } from "react-query";
+import { AuthProvider } from "@/features/auth/context/authContext";
+import { NextPageWithLayout } from "@/types/common";
+import { ChakraProvider } from "@chakra-ui/react";
+
+type AppPropsWithLayout = AppProps & {
+  Component: NextPageWithLayout;
+};
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -17,23 +24,27 @@ const queryClient = new QueryClient({
   },
 });
 
-export default function App({ Component, pageProps }: AppProps) {
+export default function App({ Component, pageProps }: AppPropsWithLayout) {
+  const getLayout = Component.getLayout ?? ((page) => page);
+
   return (
     <Fragment>
-      <QueryClientProvider client={queryClient}>
-        <Component {...pageProps} />
-      </QueryClientProvider>
-      <ToastContainer
-        position="top-right"
-        hideProgressBar={true}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable={false}
-        pauseOnHover
-        theme="colored"
-      />
+      <ChakraProvider>
+        <QueryClientProvider client={queryClient}>
+          <AuthProvider>{getLayout(<Component {...pageProps} />)}</AuthProvider>
+        </QueryClientProvider>
+        <ToastContainer
+          position="top-right"
+          hideProgressBar={true}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable={false}
+          pauseOnHover
+          theme="colored"
+        />
+      </ChakraProvider>
     </Fragment>
   );
 }
