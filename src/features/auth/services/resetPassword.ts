@@ -24,7 +24,7 @@ export const useResetPassword = () => {
     },
     {
       onSuccess() {
-        toast.success("Sign in successfully", {
+        toast.success("Reset password successfully", {
           autoClose: 1000,
           progress: undefined,
         });
