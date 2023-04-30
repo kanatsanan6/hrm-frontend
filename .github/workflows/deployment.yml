@@ -13,7 +13,7 @@ jobs:
     - name: Environment Variable
       run: |
           touch .env
-          echo NEXT_PUBLIC_API_URL=${{ secrets.NEXT_PUBLIC_API_URL }} >> .env
+          echo NEXT_PUBLIC_API_URL=${{ secrets.NEXT_PUBLIC_API_URL }} >> .env.example
 
     - name: Checkout code
       uses: actions/checkout@v3

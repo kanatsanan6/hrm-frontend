@@ -6,10 +6,6 @@
 app = "hrm-frontend"
 primary_region = "sin"
 
-[build]
-  [build.args]
-    NEXT_PUBLIC_API_URL = "Value goes here"
-
 [env]
   PORT = "8080"
 

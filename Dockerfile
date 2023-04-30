@@ -12,6 +12,9 @@ RUN yarn build
 FROM node:16-alpine AS runner
 WORKDIR /app
 
+COPY .env.example .
+RUN mv .env.example .env
+
 ENV NODE_ENV production
 ENV NEXT_TELEMETRY_DISABLED 1
 
