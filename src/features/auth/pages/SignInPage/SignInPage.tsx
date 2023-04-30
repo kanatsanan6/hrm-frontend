@@ -48,7 +48,7 @@ const SignInPage = () => {
             onSubmit={(data) => signIn({ data })}
           />
           <HStack spacing="4px" fontSize="14px">
-            <Text color="gray.500">Don't have an account?&nbsp;</Text>
+            <Text color="gray.500">Do not have an account?&nbsp;</Text>
             <Link color="blue.600" href="/sign-up">
               Sign Up
             </Link>

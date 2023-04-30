@@ -1,0 +1,25 @@
+name: Deploy Production
+on:
+  push:
+    branches:
+      - main
+      - build/deploy
+jobs:
+  deploy:
+    name: Deploy app
+    runs-on: ubuntu-latest
+    steps:
+     - name: Environment Variable
+       run: |
+          touch .env
+          echo NEXT_PUBLIC_API_URL=${{ secrets.NEXT_PUBLIC_API_URL }} >> .env
+
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - uses: superfly/flyctl-actions/setup-flyctl@master
+
+      - name: Deployment
+        run: flyctl deploy --remote-only
+        env:
+          FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}

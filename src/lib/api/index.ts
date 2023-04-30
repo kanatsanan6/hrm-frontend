@@ -27,7 +27,7 @@ _axios.interceptors.request.use(async (config: any) => {
 });
 
 export function fetchAPI<T = any>({
-  url = "http://localhost:3031",
+  url = process.env.NEXT_PUBLIC_API_URL as string,
   prefix = "",
   path,
   ...options
