@@ -32,6 +32,8 @@ export function fetchAPI<T = any>({
   path,
   ...options
 }: FetchAPIParams) {
+  console.log(process.env.NEXT_PUBLIC_API_URL);
+
   return _axios.request<T>({
     baseURL: getBaseUrl({ url, prefix, path }),
     ...options,
