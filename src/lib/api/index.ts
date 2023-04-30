@@ -27,13 +27,11 @@ _axios.interceptors.request.use(async (config: any) => {
 });
 
 export function fetchAPI<T = any>({
-  url = process.env.NEXT_PUBLIC_API_URL as string,
+  url = "ac5b5454e4f7a4eb5aac059dabba4361-1701890840.ap-southeast-1.elb.amazonaws.com",
   prefix = "",
   path,
   ...options
 }: FetchAPIParams) {
-  console.log(process.env.NEXT_PUBLIC_API_URL);
-
   return _axios.request<T>({
     baseURL: getBaseUrl({ url, prefix, path }),
     ...options,
