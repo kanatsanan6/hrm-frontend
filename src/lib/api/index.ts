@@ -1,5 +1,6 @@
 import { getCredentials } from "@/features/auth/utils";
 import axios, { AxiosRequestConfig } from "axios";
+import { envConfig } from "../env";
 
 type FetchAPIParams = {
   url?: string;
@@ -27,11 +28,13 @@ _axios.interceptors.request.use(async (config: any) => {
 });
 
 export function fetchAPI<T = any>({
-  url = "http://localhost:3031",
+  url = envConfig.API_URL,
   prefix = "",
   path,
   ...options
 }: FetchAPIParams) {
+  console.log(envConfig.API_URL);
+
   return _axios.request<T>({
     baseURL: getBaseUrl({ url, prefix, path }),
     ...options,

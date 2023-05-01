@@ -10,6 +10,7 @@ import { FiEye, FiEyeOff } from "react-icons/fi";
 
 export type PasswordInputProps = InputProps & {};
 
+// eslint-disable-next-line react/display-name
 const PasswordForm = forwardRef<HTMLInputElement, PasswordInputProps>(
   (props, ref) => {
     const [show, setShow] = useState(false);
