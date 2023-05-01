@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction } from "react";
 import {
   Avatar,
   Box,
@@ -16,12 +16,13 @@ import {
 import { IconType } from "react-icons";
 import { RxExit } from "react-icons/rx";
 import { FaUser, FaCalendar } from "react-icons/fa";
-import { IoMdSettings } from "react-icons/io";
 import { FcOrganization } from "react-icons/fc";
 import { BsFillArrowLeftCircleFill } from "react-icons/bs";
 
 import { useAuthContext } from "@/features/auth/context/authContext";
 import { useRouter } from "next/router";
+import { useMe } from "@/services/me";
+import { Can } from "@/permissions/Can";
 
 type Props = {
   isDisplay: boolean;
@@ -31,6 +32,8 @@ type Props = {
 export const SideBar = (props: Props) => {
   const { isDisplay, setIsDisplay } = props;
   const { setSignOut } = useAuthContext();
+
+  const { data: meData } = useMe();
 
   const onSignOut = () => {
     setSignOut();
@@ -42,19 +45,16 @@ export const SideBar = (props: Props) => {
 
   const SIDEBAR_ROUTES = [
     {
+      key: "user_management",
       url: "/user-management",
       name: "User Management",
       icon: FaUser,
     },
     {
+      key: "leave",
       url: "/leaves",
       name: "Leaves",
       icon: FaCalendar,
-    },
-    {
-      url: "/settings",
-      name: "Settings",
-      icon: IoMdSettings,
     },
   ];
 
@@ -99,14 +99,36 @@ export const SideBar = (props: Props) => {
         </HStack>
 
         <VStack alignItems="start" marginTop="20px" spacing="6px">
-          {SIDEBAR_ROUTES.map((elem, idx) => (
-            <Menu
-              key={idx}
-              route={elem.url}
-              icon={elem.icon}
-              label={elem.name}
-            />
-          ))}
+          {SIDEBAR_ROUTES.map((elem, idx) => {
+            const renderLink = () => {
+              return (
+                <Menu
+                  key={idx}
+                  route={elem.url}
+                  icon={elem.icon}
+                  label={elem.name}
+                />
+              );
+            };
+
+            if (elem.key === "user_management") {
+              return (
+                <Can I="read" a="user_management" key={elem.key}>
+                  {renderLink()}
+                </Can>
+              );
+            }
+
+            if (elem.key === "leave") {
+              return (
+                <Can I="read" a="leave" key={elem.key}>
+                  {renderLink()}
+                </Can>
+              );
+            }
+
+            return renderLink();
+          })}
         </VStack>
       </Box>
 
@@ -114,7 +136,23 @@ export const SideBar = (props: Props) => {
         <PopoverTrigger>
           <HStack cursor="pointer">
             <Avatar name="Kanatsanan Janpakdee" size="sm" />
-            <Text fontSize="14px">Kanatsanan Janpakdee</Text>
+            <VStack alignItems="start" spacing="2px">
+              <Text fontSize="14px">
+                {meData?.user.firstName}&nbsp;{meData?.user.lastName}
+              </Text>
+              <Flex>
+                <Text fontSize="12px" color="gray.500">
+                  {meData?.user.email}&nbsp;
+                </Text>
+                <Text
+                  fontSize="12px"
+                  color="gray.500"
+                  textTransform="capitalize"
+                >
+                  ({meData?.user.role})
+                </Text>
+              </Flex>
+            </VStack>
           </HStack>
         </PopoverTrigger>
         <PopoverContent

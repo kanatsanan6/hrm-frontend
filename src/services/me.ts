@@ -1,9 +1,9 @@
 import { AxiosError } from "axios";
 import { get } from "lodash";
-import { useQuery } from "react-query";
+import { UseQueryOptions, useQuery } from "react-query";
 
 import { fetchAPI } from "@/lib/api";
-import { RawUser, User } from "@/types";
+import { Me, RawMe, RawUser, Rules, User } from "@/types";
 
 const transformUser = (user: RawUser): User => {
   return {
@@ -12,8 +12,16 @@ const transformUser = (user: RawUser): User => {
     firstName: user.first_name,
     lastName: user.last_name,
     companyId: user.company_id,
+    role: user.role,
     createdAt: user.created_at,
     updatedAt: user.updated_at,
+  };
+};
+
+const transformMe = (raw: RawMe): Me => {
+  return {
+    user: transformUser(raw.user),
+    policy: raw.policy as Rules,
   };
 };
 
@@ -25,12 +33,13 @@ const getMe = async () => {
 
   const data = get(response, "data.data", []);
 
-  return transformUser(data);
+  return transformMe(data);
 };
 
-export const useMe = () => {
-  return useQuery<User, AxiosError>({
-    queryKey: ["USERS"],
+export const useMe = (options?: UseQueryOptions<Me>) => {
+  return useQuery<Me>({
+    queryKey: ["Me"],
     queryFn: () => getMe(),
+    ...options,
   });
 };

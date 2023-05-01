@@ -7,6 +7,7 @@ export const transformUser = (user: RawUser): User => {
     firstName: user.first_name,
     lastName: user.last_name,
     createdAt: user.created_at,
+    role: user.role,
     updatedAt: user.updated_at,
   };
 };

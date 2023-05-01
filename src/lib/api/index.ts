@@ -33,8 +33,6 @@ export function fetchAPI<T = any>({
   path,
   ...options
 }: FetchAPIParams) {
-  console.log(envConfig.API_URL);
-
   return _axios.request<T>({
     baseURL: getBaseUrl({ url, prefix, path }),
     ...options,

@@ -24,6 +24,7 @@ import { useForm } from "react-hook-form";
 import { InviteUserPayload } from "../types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { inviteUserSchema } from "../schema";
+import { Can } from "@/permissions/Can";
 
 const UserManagementPage: NextPageWithLayout = () => {
   const { data } = useUsers();
@@ -54,9 +55,11 @@ const UserManagementPage: NextPageWithLayout = () => {
         <Text fontSize="25px" fontWeight="bold">
           User Management
         </Text>
-        <Button onClick={onOpen} colorScheme="blue">
-          Invite User
-        </Button>
+        <Can I="invite" a="user_management" key="user_management">
+          <Button onClick={onOpen} colorScheme="blue">
+            Invite User
+          </Button>
+        </Can>
       </HStack>
       <UserManagementTable data={userData} />
 
@@ -103,7 +106,11 @@ const UserManagementPage: NextPageWithLayout = () => {
                   placeholder="name@mail.com"
                 />
               </FormControl>
-              <Flex width="100%" justifyContent="space-between">
+              <Flex
+                paddingTop="13px"
+                width="100%"
+                justifyContent="space-between"
+              >
                 <Button onClick={onClose} width="48%">
                   Cancel
                 </Button>
