@@ -8,6 +8,7 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import { AuthProvider } from "@/features/auth/context/authContext";
 import { NextPageWithLayout } from "@/types/common";
 import { ChakraProvider } from "@chakra-ui/react";
+import Head from "next/head";
 
 type AppPropsWithLayout = AppProps & {
   Component: NextPageWithLayout;
@@ -31,6 +32,9 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
     <Fragment>
       <ChakraProvider>
         <QueryClientProvider client={queryClient}>
+          <Head>
+            <title>Human Resource Management</title>
+          </Head>
           <AuthProvider>{getLayout(<Component {...pageProps} />)}</AuthProvider>
         </QueryClientProvider>
         <ToastContainer
