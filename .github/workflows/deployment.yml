@@ -1,26 +1,26 @@
-name: Deploy Production
+name: Vercel Production Deployment
+env:
+  VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+  VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
 on:
   push:
     branches:
       - main
       - build/deploy
 jobs:
-  deploy:
-    name: Deploy app
+  Deploy-Production:
     runs-on: ubuntu-latest
-
     steps:
-    - name: Environment Variable
-      run: |
-          touch .env.example
-          echo NEXT_PUBLIC_API_URL=${{ secrets.NEXT_PUBLIC_API_URL }} >> .env.example
+      - uses: actions/checkout@v2
 
-    - name: Checkout code
-      uses: actions/checkout@v3
+      - name: Install Vercel CLI
+        run: npm install --global vercel@latest
 
-    - uses: superfly/flyctl-actions/setup-flyctl@master
+      - name: Pull Vercel Environment Information
+        run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
 
-    - name: Deployment
-      run: flyctl deploy --remote-only
-      env:
-        FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
+      - name: Build Project Artifacts
+        run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
+
+      - name: Deploy Project Artifacts to Vercel
+        run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
