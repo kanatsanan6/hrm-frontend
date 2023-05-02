@@ -35,7 +35,7 @@ export const useSignIn = () => {
         });
 
         setTimeout(() => {
-          window.location.href = "/leaves";
+          window.location.href = "/user-management";
         }, 1000);
       },
       onError() {

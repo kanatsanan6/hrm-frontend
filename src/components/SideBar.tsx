@@ -45,16 +45,16 @@ export const SideBar = (props: Props) => {
 
   const SIDEBAR_ROUTES = [
     {
-      key: "leave",
-      url: "/leaves",
-      name: "Leaves",
-      icon: FaCalendar,
-    },
-    {
       key: "user_management",
       url: "/user-management",
       name: "User Management",
       icon: FaUser,
+    },
+    {
+      key: "leave",
+      url: "/leaves",
+      name: "Leaves",
+      icon: FaCalendar,
     },
   ];
 
