@@ -189,15 +189,7 @@ const Menu = (props: MenuProps) => {
   const matchRoute = router.pathname === route;
 
   return (
-    <Link
-      width="100%"
-      href={route}
-      sx={{
-        _hover: {
-          bgColor: "gray.100",
-        },
-      }}
-    >
+    <Link width="100%" href={route} sx={{ _hover: { textDecoration: "none" } }}>
       <HStack
         alignItems="center"
         spacing="14px"
