@@ -21,6 +21,7 @@ export const Calendar = (props: Props) => {
     setSelected(date);
   };
 
+  // eslint-disable-next-line react/display-name
   const CustomInput = forwardRef<HTMLInputElement>(
     ({ onClick, value }: any, ref) => {
       let display = undefined;
