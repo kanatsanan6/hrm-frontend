@@ -17,6 +17,8 @@ import { useForm } from "react-hook-form";
 import { CreateLeaveParams } from "../types";
 import { formatDateTime } from "@/utils/transformDataTime";
 import { useCreateLeave } from "../services/createLeave";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { createLeaveSchema } from "../schema";
 
 type Props = {
   disclosure: UseDisclosureReturn;
@@ -31,8 +33,23 @@ export const CreateLeaveModal = (props: Props) => {
     handleSubmit,
     setValue,
     register,
+    reset,
     formState: { errors },
-  } = useForm<CreateLeaveParams>({});
+  } = useForm<CreateLeaveParams>({
+    resolver: zodResolver(createLeaveSchema),
+  });
+
+  const handleOnSuccess = () => {
+    disclosure.onClose();
+    reset();
+  };
+
+  const dateErrorMsg = () => {
+    if (!errors.start_date?.message || !errors.end_date?.message)
+      return "Required";
+
+    return undefined;
+  };
 
   return (
     <Modal isCentered onClose={disclosure.onClose} isOpen={disclosure.isOpen}>
@@ -42,11 +59,15 @@ export const CreateLeaveModal = (props: Props) => {
         <ModalBody>
           <form
             onSubmit={handleSubmit((data) =>
-              createLeave({ data }, { onSuccess: disclosure.onClose })
+              createLeave({ data }, { onSuccess: handleOnSuccess })
             )}
           >
             <VStack spacing="10px">
-              <FormControl label="Leave Type" isRequired={true}>
+              <FormControl
+                label="Leave Type"
+                isRequired={true}
+                errorMsg={errors.leave_type?.message}
+              >
                 <Select placeholder="Select option" {...register("leave_type")}>
                   <option value="vacation_leave">Vacation Leave</option>
                   <option value="sick_leave">Sick Leave</option>
@@ -55,7 +76,11 @@ export const CreateLeaveModal = (props: Props) => {
                 </Select>
               </FormControl>
 
-              <FormControl label="Date" isRequired={true}>
+              <FormControl
+                label="Date"
+                isRequired={true}
+                errorMsg={dateErrorMsg()}
+              >
                 <Calendar
                   onChange={(value) => {
                     setValue(
@@ -76,7 +101,11 @@ export const CreateLeaveModal = (props: Props) => {
                 />
               </FormControl>
 
-              <FormControl label="Desecription" isRequired={true}>
+              <FormControl
+                label="Desecription"
+                isRequired={true}
+                errorMsg={errors.description?.message}
+              >
                 <Input
                   placeholder="Go to phuket"
                   {...register("description")}
