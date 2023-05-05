@@ -8,7 +8,6 @@ export const formatDateTime = (
   format?: string
 ): string => {
   return dayjs(date)
-    .locale("th")
-    .add(543, "year")
+    .locale("en")
     .format(format ?? DEFAULT_DATE_TIME_FORMAT);
 };

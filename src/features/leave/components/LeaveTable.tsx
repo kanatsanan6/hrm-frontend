@@ -8,6 +8,9 @@ import {
   Tr,
 } from "@chakra-ui/react";
 import { StatusBadge } from "./StatusBadge";
+import { useLeaves } from "../services/getLeaves";
+import { formatDateTime } from "@/utils/transformDataTime";
+import { DISPLAY_FORMAT_DATE } from "../constant";
 
 export const LeaveTable = () => {
   const COLUMNS = [
@@ -17,6 +20,8 @@ export const LeaveTable = () => {
     "Status",
     "Created at",
   ];
+
+  const { data } = useLeaves();
 
   return (
     <TableContainer marginTop="30px">
@@ -30,33 +35,22 @@ export const LeaveTable = () => {
           <Tr />
         </Thead>
         <Tbody>
-          <Tr>
-            <Td>Vacation</Td>
-            <Td>Go To Phuket</Td>
-            <Td>17 Jan (2nd-half) - 20 Jan (Full)</Td>
-            <Td>
-              <StatusBadge status="approved" />
-            </Td>
-            <Td>25-11-2566 14:35</Td>
-          </Tr>
-          <Tr>
-            <Td>Vacation</Td>
-            <Td>Go To Phuket</Td>
-            <Td>17 Jan (2nd-half) - 20 Jan (Full)</Td>
-            <Td>
-              <StatusBadge status="rejected" />
-            </Td>
-            <Td>25-11-2566 14:35</Td>
-          </Tr>
-          <Tr>
-            <Td>Vacation</Td>
-            <Td>Go To Phuket</Td>
-            <Td>17 Jan (2nd-half) - 20 Jan (Full)</Td>
-            <Td>
-              <StatusBadge status="pending" />
-            </Td>
-            <Td>25-11-2566 14:35</Td>
-          </Tr>
+          {data?.map((leave) => (
+            <Tr key={leave.id}>
+              <Td textTransform="capitalize">
+                {leave.leaveType.name.split("_").join(" ")}
+              </Td>
+              <Td>{leave.description}</Td>
+              <Td>
+                {formatDateTime(leave.startDate, DISPLAY_FORMAT_DATE)} -{" "}
+                {formatDateTime(leave.endDate, DISPLAY_FORMAT_DATE)}
+              </Td>
+              <Td>
+                <StatusBadge status={leave.status} />
+              </Td>
+              <Td>{formatDateTime(leave.createdAt)}</Td>
+            </Tr>
+          ))}
         </Tbody>
       </Table>
     </TableContainer>

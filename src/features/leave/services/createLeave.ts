@@ -1,15 +1,18 @@
-import { useMutation } from "react-query";
+import { useMutation, useQueryClient } from "react-query";
 import { CreateLeaveParams } from "../types";
 import { fetchAPI } from "@/lib/api";
 import { Axios } from "axios";
 import { toast } from "react-toastify";
 import { getErrorMsg } from "@/lib/utils/getErrorMsg";
+import { LEAVES } from "../constant";
 
 type Payload = {
   data: CreateLeaveParams;
 };
 
 export const useCreateLeave = () => {
+  const queryClient = useQueryClient();
+
   return useMutation<void, Axios, Payload>(
     async ({ data }) => {
       await fetchAPI({
@@ -19,8 +22,10 @@ export const useCreateLeave = () => {
       });
     },
     {
-      onSuccess() {
-        toast.success("Invite user successfully", {
+      async onSuccess() {
+        await queryClient.refetchQueries(LEAVES);
+
+        toast.success("Create leave successfully", {
           autoClose: 1000,
           progress: undefined,
         });
