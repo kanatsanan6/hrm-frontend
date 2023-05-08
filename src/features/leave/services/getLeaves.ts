@@ -14,9 +14,7 @@ const getLeaves = async () => {
 
   const data = get(response, "data.data", []);
 
-  console.log(data);
-
-  return data.map(transformLeave);
+  return data?.map(transformLeave);
 };
 
 export const useLeaves = () => {
